@@ -19,7 +19,6 @@ nav {
     background-color: rgba(0, 0, 0, 0.35); /* Transparent background */
     color: #fff; /* White font color */
     
-   
 }
 
 nav ul .right{
@@ -97,12 +96,14 @@ header {
 /* Landing Section */
 #landing {
     position: relative; /* Ensure the overlay is positioned relative to this section */
-    background-image: url('../images/landing.jpg'); /* Add your background image path */
+    background-image: url('../images/landing2.jpg '  ); /* Add your background image path */
     background-size: cover;
     background-attachment: fixed; /* Fix the background image */
     background-position: center;
-    padding: 200px 0; /* Adjust padding as needed */
-    text-align: center; /* Center align text */
+    padding: 12% 0 ; /* Adjust padding as needed */
+    text-align: left; /* Center align text */
+    
+    
 }
 
 .landing-overlay {
@@ -112,6 +113,7 @@ header {
     width: 100%;
     height: 100%;
     background-color: rgba(0, 0, 0, 0.6); /* Semi-transparent black color */
+    
 }
 
 .landing-section {
@@ -122,9 +124,11 @@ header {
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* Add slight shadow to text */
     font-size: 20px;
     height:250px;
+    
+    
 }
 .landing-section h1{
-    font-size: 50px;
+    font-size: 60px;
 }
 
 
@@ -140,15 +144,8 @@ header {
 .header-content {
     flex-grow: 1;
 }
-
-
-
-
-section {
-    padding: 3em 0;
-}
-#about{
-    padding: 9%;
+#about {
+    padding: 5%;
 }
 
 .about-section {
@@ -161,6 +158,7 @@ section {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    margin-bottom: 2em; /* Add spacing between content and milestones */
 }
 
 .about-image {
@@ -173,29 +171,108 @@ section {
 .about-details {
     width: 65%;
 }
+
+/* Progress Bar Section Styling */
+.milestones-section {
+    text-align: center;
+    
+    
+}
+
+.progress-bar-container {
+    position: relative;
+    width: 80%; /* Adjust width as needed */
+    margin: 0 auto;
+    padding: 5%;
+}
+
+.progress-bar {
+    position: relative;
+    height: 5px; /* Thickness of the line */
+    background-color: #ddd; /* Background color for the line */
+    border-radius: 50px; /* Rounded edges */
+    margin: 20px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.milestone {
+    position: relative;
+    text-align: center;
+    flex: 1; /* Ensure even spacing for milestones */
+}
+
+.text-top {
+    position: absolute;
+    top: calc(-1.5em - 55px); /* 1.5em above the circle, adjusted for the circle's height */
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 12px;
+    color: #333;
+    max-width: 100px;
+    word-wrap: break-word;
+}
+
+.text-bottom {
+    position: absolute;
+    top: calc(1.5em + 5px); /* 1.5em below the circle, adjusted for the circle's height */
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 12px;
+    color: #333;
+    max-width: 100px;
+    word-wrap: break-word;
+}
+
+.circle {
+    width: 20px;
+    height: 20px;
+    background-color: #3498db;
+    border-radius: 50%;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 10px;
+    position: absolute;
+    top: -10px; /* Adjust circle's alignment on the bar */
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1;
+}
+
+
+
 #projects{
     background-color: #f5f5f5;
+    padding: 15px;
+    
 }
 
 .projects-container {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 20px; /* Adjust as needed */
+    grid-template-columns: repeat(2, 1fr); /* 2 boxes per row */
+    gap: 30px; /* Even spacing between boxes */
+    width: 100%; /* Ensure it takes up full width */
+    padding-top: 20px;
 }
 
-
 .project {
-    width: 90%;
+    width: 85%; /* Ensure project takes full width of its grid cell */
+    height: 450px; /* Set a fixed height for the boxes */
     margin-bottom: 30px;
-    margin-right: 2%;
     border: 1px solid #ddd;
-    padding: 20px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    padding: 20px; /* Adjust padding as needed */
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
     border-radius: 10px;
     overflow: hidden;
     background-color: #fff;
     transition: transform 0.3s ease;
 }
+
+
+
 
 .project:last-child {
     margin-right: 0;
@@ -211,8 +288,9 @@ section {
 
 .project-image {
     width: 100%;
-    height: auto;
+    height: 200px;
     border-radius: 10px;
+    object-fit: cover;
 }
 
 .project-details {
