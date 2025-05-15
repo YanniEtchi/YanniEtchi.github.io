@@ -1,214 +1,588 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="./styles/styles.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
-    
-    
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Yanni Etchi | Portfolio</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <style>
+    /* Variables & Reset */
+    :root {
+      --bg: #0d0d0d;
+      --primary: #ff006e;
+      --text: #e0e0e0;
+      --surface: rgba(255, 255, 255, 0.05);
+      --radius: 12px;
+      --transition: 0.4s ease;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Space Mono', monospace;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      padding: 0;
+    }
+    a {
+      text-decoration: none;
+      color: inherit;
 
-    <title> Yanni Etchi</title>
+
+
+
+      position: relative;
+    }
+    a::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      bottom: -4px;
+      width: 0;
+      height: 1px;
+      background: var(--primary);
+      transition: width var(--transition);
+    }
+    a:hover::after { width: 100%; }
+    .icon {
+      color: var(--primary);
+      margin-right: 8px;
+    }
+
+    /* Header & Nav */
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      backdrop-filter: blur(10px);
+      background: rgba(0, 0, 0, 0.4);
+      padding: 1rem;
+      z-index: 100;
+    }
+    nav {
+      max-width: 1140px;
+      margin: auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .logo { 
+      display: flex;
+      align-items: center;
+    }
+    .logo a { 
+      font-weight: 700; 
+      font-size: 1.2rem; 
+    }
+    .nav-links { display: flex; gap: 2rem; }
+    .nav-links a { font-size: 0.9rem; }
+    .nav-toggle { display: none; font-size: 1.5rem; cursor: pointer; }
+
+    /* Sections */
+    section {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 4rem 1rem;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity var(--transition), transform var(--transition);
+    }
+    .section--visible { opacity: 1; transform: translateY(0); }
+    h2 { 
+      margin-bottom: 1rem; 
+      color: var(--primary); 
+      display: flex;
+      align-items: center;
+    }
+
+    /* Hero */
+    .hero { 
+      min-height: 100vh; 
+      display: flex; 
+      align-items: center; 
+      justify-content: center; 
+      flex-direction: column; 
+      text-align: center; 
+    }
+    .hero h1 { 
+      font-size: 3rem; 
+      color: var(--primary); 
+      margin-bottom: 1rem;
+    }
+    .hero p { 
+      font-size: 1.2rem; 
+      color: #aaa; 
+      min-height: 1.5em;
+      border-right: 0.08em solid transparent;
+      white-space: nowrap;
+      overflow: hidden;
+    }
+
+    /* Typing animation */
+    @keyframes typing-effect {
+      0% { width: 0; }
+      30% { width: 100%; }
+      60% { width: 0; }
+      100% { width: 0; }
+    }
+    @keyframes blink-caret {
+      from, to { border-color: transparent }
+      50% { border-color: var(--primary) }
+    }
+    @keyframes fadeIn {
+      from { opacity: 0 }
+      to { opacity: 1 }
+    }
+
+    /* About */
+    .about-content { display: flex; align-items: center; gap: 2rem; flex-wrap: wrap; }
+    .portrait img { 
+      width: 350px; 
+      height: 350px;
+      border-radius: var(--radius); 
+      background: var(--surface);
+      object-fit: cover;
+    }
+    .bio { flex: 1; }
+
+    /* Projects */
+    .grid { display: grid; gap: 3rem; }
+    .projects-list { grid-template-columns: repeat(auto-fit, minmax(350px, 300px)); }
+    .project { 
+      background: var(--surface); 
+      border-radius: var(--radius); 
+      overflow: hidden; 
+      transition: transform var(--transition);
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    }
+    .project img { width: 100%; height: 180px; object-fit: cover; }
+    .project-content { padding: 1.5rem; }
+    .project-content h3 { 
+      margin-bottom: 0.5rem; 
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+    }
+    .project-content .tech { font-size: 0.9rem; color: #ccc; margin-bottom: 1rem; }
+    .project-content .links a { 
+      margin-right: 1rem; 
+      font-size: 0.9rem; 
+      color: #aaa; 
+      display: inline-flex;
+      align-items: center;
+    }
+    .project:hover { transform: translateY(-5px); }
+
+    /* Fixed Timeline */
+    .timeline { 
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+      position: relative;
+    }
+    .timeline-item {
+      background: var(--surface);
+      border-radius: var(--radius);
+      padding: 1.5rem;
+      position: relative;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+      border-left: 3px solid var(--primary);
+    }
+    .timeline-date {
+      font-size: 0.8rem;
+      color: #aaa;
+      margin-bottom: 0.5rem;
+      font-weight: bold;
+    }
+    .timeline-content h3 {
+      margin-bottom: 0.25rem;
+      color: var(--text);
+      font-size: 1rem;
+    }
+    .timeline-content p {
+      font-size: 0.8rem;
+      color: #ccc;
+    }
+
+    /* Resume */
+    .resume-preview iframe { 
+      width: 100%; 
+      height: 500px; 
+      border: none; 
+      border-radius: var(--radius); 
+      background: var(--surface);
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    }
+    .resume-download { 
+      margin-top: 1rem; 
+      text-align: center; 
+    }
+    .resume-download a {
+      display: inline-flex;
+      align-items: center;
+      padding: 0.5rem 1rem;
+      background: var(--primary);
+      color: white;
+      border-radius: 4px;
+      transition: opacity 0.3s;
+    }
+    .resume-download a:hover {
+      opacity: 0.9;
+    }
+    .resume-download a::after {
+      display: none;
+    }
+
+    /* Contact */
+    .contact-links {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+    .contact-links a {
+      display: inline-flex;
+      align-items: center;
+    }
+
+    /* Social Icons */
+    .social-icons {
+      display: flex;
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+    .social-icons a {
+      font-size: 1.5rem;
+      color: var(--text);
+      transition: color var(--transition);
+    }
+    .social-icons a:hover {
+      color: var(--primary);
+    }
+    .social-icons a::after {
+      display: none;
+    }
+
+    /* Footer */
+    footer { text-align: center; padding: 2rem 0; color: #555; }
+
+    /* Mobile */
+    @media (max-width: 1140px) {
+      .nav-toggle { display: block; }
+      .nav-links { 
+        position: fixed; 
+        top: 0; 
+        right: 0; 
+        width: 240px; 
+        height: 100vh; 
+        background: var(--bg); 
+        flex-direction: column; 
+        padding-top: 4rem; 
+        transform: translateX(100%); 
+        transition: transform var(--transition);
+        z-index: 99;
+      }
+      .nav-links.open { transform: translateX(0); }
+      .nav-links a { padding: 1rem 2rem; }
+      .about-content { flex-direction: column; align-items: center; }
+      .timeline { grid-template-columns: 1fr; }
+      .hero h1 { font-size: 2rem; }
+    }
+  </style>
 </head>
 <body>
-
-    <!-- Navigation Bar -->
+  <header>
     <nav>
-        <div class="nav">
-            <ul>
-                <li class="home-link"><a href="#landing">Home</a></li>
-                <li class = "right"><a href="#about">About</a></li>
-                <li class = "right"><a href="#projects">Projects</a></li>
-                <li class = "right"><a href="#resume">Resume</a></li>
-                <li class = "right"><a href="#contact">Contact</a></li>
-                
-                
-            </ul>
-        </div>
+      <div class="logo">
+        <i class="fas fa-code icon"></i>
+        <a href="#hero">Yanni Etchi</a>
+      </div>
+      <div class="nav-toggle">☰</div>
+      <div class="nav-links">
+        <a href="#about"><i class="fas fa-user icon"></i>About</a>
+        <a href="#projects"><i class="fas fa-laptop-code icon"></i>Projects</a>
+        <a href="#publication"><i class="fas fa-book icon"></i>Publication</a>
+        <a href="#experience"><i class="fas fa-briefcase icon"></i>Experience</a>
+        <a href="#resume"><i class="fas fa-file-alt icon"></i>Resume</a>
+        <a href="#contact"><i class="fas fa-envelope icon"></i>Contact</a>
+      </div>
     </nav>
+  </header>
 
-    <!-- Header Section -->
+  <section class="hero" id="hero">
+    <h1>Yanni Etchi.</h1>
+    <p class="typing-animation"></p>
+  </section>
 
-    <!-- Landing Section -->
-<section id="landing" class = "section">
-    <div class="landing-overlay"></div>
-    <div class="container landing-section">
-        <h1>Yanni Etchi</h1>
-        <p>Data Science | Machine Learning | Research</p>
+  <section id="about">
+    
+    <div class="about-content">
+      <div class="portrait">
+        <img src="./images/about-img.JPG" alt="Portrait" />
+      </div>
+      <div class="bio">
+        <h2><i class="fas fa-user icon"></i>About Me</h2>
+        <p>Placeholder for a brief bio about your background, interests, and goals. As a recent Computer Science graduate, I'm passionate about developing innovative solutions to real-world problems. My technical journey has equipped me with skills in full-stack development, data analysis, and machine learning.</p>
+      </div>
     </div>
-</section>
+  </section>
 
+  <section id="projects">
+    <h2><i class="fas fa-laptop-code icon"></i>Projects</h2>
+    <div class="grid projects-list">
+      <div class="project">
+        <img src="./images/VBH_img.jpg" alt="Project 1" />
+        <div class="project-content">
+          <h3>Machine Learning for Solubility Optimization </h3>
+          <div class="tech">Python | Tensorflow </div>
+         
+          <p> Trained ML models for indetify prospect cations for redox active material of non-aqueous redox flow batteries.</p>
+          <div class="links">
+         
+            <a href="./projects/project1.html"><i class="fas fa-external-link-alt icon"></i>Read More</a>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="project">
+        <img src="./images/map_RGB.png" alt="Project 1" />
+        <div class="project-content">
+          <h3>Libra: Image Quality Assessment </h3>
+          <div class="tech">Python | Pytorch </div>
+         
+          <p>Python library for assessing image quality for evaluting effect of lossy compression on volume rendering</p>
+          <div class="links">
+            <a href="https://github.com/lanl/libra"><i class="fab fa-github icon"></i>GitHub</a>
+            <a href="https://lanl.github.io/libra/"><i class="fas fa-external-link-alt icon"></i>Live</a>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="project">
+        <img src="./images/Image_Captioning.png" alt="Project 1" />
+        <div class="project-content">
+          <h3>Image Caption Generator</h3>
+          <div class="tech">Python | Tensorflow | JavaScript | NodeJS</div>
+         
+          <p> Full stack web application for generating contextual image captions using finetuned ResNet50 and Trained LSTM on a dataset of about 8000 images.</p>
+          <div class="links">
+            <a href="https://github.com/YanniEtchi/Image-Cationing-LSTM"><i class="fab fa-github icon"></i>GitHub</a>
+            <a href="#"><i class="fas fa-external-link-alt icon"></i>Live</a>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="project">
+        <img src="./images/brain1.png" alt="Project 1" />
+        <div class="project-content">
+          <h3>COMP562 Final Project: Brain Tumor Classification</h3>
+          <div class="tech">Python | Tensorflow | Keras| NumPy</div>
+         
+          <p> Final project write-up for intro to machine learning at UNC Chapel Hill. Trained various convolutional neural networks for classifying brain scans.</p>
+          <div class="links">
+            <a href="./projects/project2.pdf"><i class="fab fa-github icon"></i>Code</a>
+            <a href="./projects/COMP_562_Final_Project (1).pdf"><i class="fas fa-external-link-alt icon"></i>Read More</a>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="project">
+        <img src="./images/Computer_Arc.jpg" alt="Project 1" />
+        <div class="project-content">
+          <h3>COMP541 Final Project: MIPS Snake Game</h3>
+          <div class="tech">SystemVerilog | C | MIPS</div>
+         
+          <p> Final project for Digital Logic and Computer Design at UNC Chapel Hill. Designed and implemented full MIPS datapath, as well as keyboard, display and sound drivers in system verilog. Wrote modern snake game in MIPS assembly</p>
+          <div class="links">
+            <a href="./projects/project2.pdf"><i class="fab fa-github icon"></i>Code</a>
+            <a href="./projects/COMP_562_Final_Project (1).pdf"><i class="fas fa-external-link-alt icon"></i>Read More</a>
+          </div>
+
+        </div>
+      </div>
    
+  </section>
 
-    <!-- Name and About Section -->
-    <section id="about" class = "section">
-        <div class="container about-section">
-            <div class="about-content">
-                <img src="./images/about-img.JPG" alt="Your Image" class="about-image">
-                <div class="about-details">
-                    <h2>Hi, I'm Yanni &#128075</h2>
-                    <p>
-                        I am a Computer Science and Applied Mathematics student at the University of North Carolina at Chapel Hill with a strong passion for data science and machine learning. Proficient in Python, Java, and web development, I have developed expertise in data manipulation, visualization, and model implementation. I am eager to apply my skills to develop impactful, data-driven solutions. Please feel free to connect with me on LinkedIn or GitHub to explore my latest projects. Thank you for visiting my portfolio!
-                    </p>
-                </div>
-            </div>
+  <section id="publication">
+    <h2><i class="fas fa-book icon"></i>Publication</h2>
+    <div class="publication-card">
+  
+      <div class="publication-content">
+        <h3 class="publication-title">An Exploration of How Volume Rendering is Impacted by Lossy Data Reduction</h3>
+        <div class="publication-meta">
+          <span class="publication-venue"><i class="fas fa-university icon"></i>SC24-W: Workshops of the International Conference for High Performance Computing, Networking, Storage and Analysis, 2024</span>
+          <span class="publication-doi"><i class="fas fa-fingerprint icon"></i>IEEE</span>
         </div>
+        <div class="publication-abstract">
+          <p>Data reduction is now frequently used by simulations to reduce the amount of data that needs to be stored. Consequently, several error-bound lossy data reduction techniques have been developed to help compress scientific datasets while trying to maximize quality. However, their impact on visualization has hardly been studied and is not very well understood. In this paper, we do an in-depth analysis of the impact of lossy data reduction on volume rendering to try to determine which parameters, such as characteristics of datasets, opacity, color affect the perception quality of lossy data reduction.</p>
+        </div>
+        <div class="publication-links">
+          <a href="https://ieeexplore.ieee.org/document/10820645" class="publication-link"><i class="fas fa-external-link-alt icon"></i>Read Paper</a>
+          
+        </div>
+      </div>
+    </div>
+  </section>
 
+  <section id="experience">
+    <h2><i class="fas fa-briefcase icon"></i>Experience</h2>
+    <div class="timeline">
+      <div class="timeline-item">
+        <div class="timeline-date"><i class="far fa-calendar-alt icon"></i>June 2025 - Present</div>
+        <div class="timeline-content">
+          <h3>Incoming Data Analyst @ LPL Financial</h3>
+          <p></p>
+        </div>
+      </div>
 
-       <!--  <div class="milestones-section">
-            <h2>My Journey</h2>
-            <div class="progress-bar-container">
-                <div class="progress-bar">
-                    <div class="milestone">
-                        <p class="text-top">Started at UNC Chapel Hill</p>
-                        <div class="circle">2018</div>
-                    </div>
-                    <div class="milestone">
-                        <p class="text-bottom">Internship: UMass Dartmouth</p>
-                        <div class="circle">2021</div>
-                    </div>
-                    <div class="milestone">
-                        <p class="text-top">Published research on data compression</p>
-                        <div class="circle">2023</div>
-                    </div>
-                    <div class="milestone">
-                        <p class="text-bottom">Accepted position at LPL Financial</p>
-                        <div class="circle">2024</div>
-                    </div>
-                </div>
-            </div>
-        </div>  -->
-    </section>
+      <div class="timeline-item">
+        <div class="timeline-date"><i class="far fa-calendar-alt icon"></i>Spring 2025</div>
+        <div class="timeline-content">
+          <h3>Learning Assistant @ UNC Mathematics</h3>
+          <p>Helped teach precalculus</p>
+        </div>
+      </div>
 
-    <!-- Progress Bar Section -->
+      <div class="timeline-item">
+        <div class="timeline-date"><i class="far fa-calendar-alt icon"></i>Fall 2024</div>
+        <div class="timeline-content">
+          <h3>Reasearch Assistant @ UNC School of Medicine</h3>
+          <p>Fine-tuned convolutional neural networks for FMRI classification</p>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-date"><i class="far fa-calendar-alt icon"></i>Summer 2024</div>
+        <div class="timeline-content">
+          <h3>Data Science at Scale Intern @ Los Alamos National Lab</h3>
+          <p>Developed workflow for assessing effect of lossy data reduction on volume rendering.</p>
+        </div>
+      </div>
+    
+
+      <div class="timeline-item">
+        <div class="timeline-date"><i class="far fa-calendar-alt icon"></i>Fall 2023 & Spring 2024</div>
+        <div class="timeline-content">
+          <h3>Math Tutor @ UNC Mathematics</h3>
+          <p>Turored undergrautes in linear algebra, precalculus, calculus I, II and III, differention equations, discrete math </p>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-date"><i class="far fa-calendar-alt icon"></i>Summer 2023</div>
+        <div class="timeline-content">
+          <h3>Machine Learning Reasearch Assistant @ U Mass Dartmouth</h3>
+          <p>Developed ML models for solubility optimization of redox-active material for non-aqueous redox flow batteries</p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <section id="resume">
+    <h2><i class="fas fa-file-alt icon"></i>Resume</h2>
+    <div class="resume-preview">
+      <iframe src="/api/placeholder/800/500"></iframe>
+    </div>
+    <div class="resume-download">
+      <a href="#"><i class="fas fa-download icon"></i>Download Resume</a>
+    </div>
+  </section>
+
+  <section id="contact">
+    <h2><i class="fas fa-envelope icon"></i>Contact</h2>
+    <div class="contact-links">
+      <p><a href="mailto:your.email@example.com"><i class="fas fa-envelope icon"></i>your.email@example.com</a></p>
+      <p><a href="#"><i class="fab fa-linkedin icon"></i>linkedin.com/in/yourprofile</a></p>
+    </div>
+    <div class="social-icons">
+      <a href="#"><i class="fab fa-github"></i></a>
+      <a href="#"><i class="fab fa-twitter"></i></a>
+      <a href="#"><i class="fab fa-instagram"></i></a>
+    </div>
+  </section>
+
+  <footer>
+    &copy; <span id="year"></span> Yanni Etchi. All rights reserved.
+  </footer>
+
+  <script>
+    // Footer year
+    document.getElementById('year').textContent = new Date().getFullYear();
+    
+    // Nav toggle
+    const navToggle = document.querySelector('.nav-toggle');
+    const navLinks = document.querySelector('.nav-links');
+    navToggle.addEventListener('click', () => navLinks.classList.toggle('open'));
+    
+    // Close menu when clicking on links
+    document.querySelectorAll('.nav-links a').forEach(link => {
+      link.addEventListener('click', () => {
+        navLinks.classList.remove('open');
+      });
+    });
+    
+    // Advanced typing animation
+    const phrases = ['Recent Computer Science Graduate', 'Web Developer', 'Data Analyst', 'Problem Solver'];
+    let currentPhrase = 0;
+    let currentChar = 0;
+    let isDeleting = false;
+    let typeSpeed = 100;
+    
+    function typeWriter() {
+      const p = document.querySelector('.hero p');
+      const currentText = phrases[currentPhrase];
       
-    <!-- Projects Section -->
-    <section id="projects" class = "section">
-        <div class="container">
-            <h2>Projects</h2>
-            <div class="projects-container">
-
-                <div class="project">
-                    <div class="project-info">
-                        <img src="./images/brain.png" alt="Project 2 Image" class="project-image">
-                        <div class="project-details">
-                            <h3>Detecting Brain Tumors with Convolutional Neural Networks</h3>
-                            <p> This is a collaborative final project for machine learning course at UNC Chapel Hill aimed to perform a binary classification task using MRI images. Trained and fine-tuned our own model to achieve similar results to Pretrained ResNet and VGG16 </p>
-                            <a href="https://github.com/lanl/libra" class="project-link">View More</a>
-                        </div>
-                    </div>
-                    
-                </div>
-
-                <div class="project">
-                    <div class="project-info">
-                        <img src="./images/map_RGB.png" alt="Project 2 Image" class="project-image">
-                        <div class="project-details">
-                            <h3>Libra. Image Quality Assessment</h3>
-                            <p> Python library with integrated Command Line Interface for computing full-reference and no-reference image quality metrics in different color spaces. Also allows for generation of quality maps for given images.</p>
-                            <a href="https://github.com/lanl/libra" class="project-link">View More</a>
-                        </div>
-                    </div>
-                    
-                </div>
-
-                <div class="project">
-                    <div class="project-info">
-                        <img src="./images/VBH_img.jpg" alt="Project 1 Image" class="project-image">
-                        <div class="project-details">
-                            <h3>Redox Active Material Solubility Optimiation</h3>
-                            <p>Implemented regression models to predict cations for non-aqueous redox flow batteries. The project focused on analyzing chemical datasets to optimize ion interactions and improve battery performance.</p>
-                            <a href="./projects/project1.html" class="project-link">View More</a>
-                        </div>
-                    </div>
-                    
-                </div>
-                <div class="project">
-                    <div class="project-info">
-                        <img src="./images/encoder_decoder.png" alt="Project 2 Image" class="project-image">
-                        <div class="project-details">
-                            <h3>Image Captioning With Deep Neural Networks </h3>
-                            <p>  Built a deep learning model to generate captions for images by combining CNNs for feature extraction and LSTMs for text generation. The model was trained on large datasets to improve caption accuracy and fluency.</p>
-                            <a href="https://github.com/YanniEtchi237/Image-Cationing-LSTM" class="project-link">View More</a>
-                        </div>
-                    </div>
-                    
-                </div>
-                <div class="project">
-                    <div class="project-info">
-                        <img src="./images/fake_news_detection_img.jpg" alt="Project 2 Image" class="project-image">
-                        <div class="project-details">
-                            <h3>News Article Reliability Classification </h3>
-                            <p> Created a Flask web app that classifies the reliability of news articles using NLP techniques. The app assessed article credibility by analyzing features like source and sentiment to provide a reliability score.</p>
-                            <a href="https://github.com/YanniEtchi237/Fake-news-detection-ML" class="project-link">View More</a>
-                        </div>
-                    </div>
-                    
-                </div>
-                
-                <!-- Add more projects as needed -->
-            </div>
-        </div>
-    </section>
-
+      if (isDeleting) {
+        // Deleting text
+        p.textContent = currentText.substring(0, currentChar - 1);
+        currentChar--;
+        typeSpeed = 50; // Faster when deleting
+      } else {
+        // Typing text
+        p.textContent = currentText.substring(0, currentChar + 1);
+        currentChar++;
+        typeSpeed = 150; // Slower when typing
+      }
+      
+      // Blinking cursor effect
+      p.style.borderRight = '0.08em solid var(--primary)';
+      
+      // Logic for changing phrases
+      if (!isDeleting && currentChar === currentText.length) {
+        // Completed typing current phrase
+        isDeleting = true;
+        typeSpeed = 1500; // Pause at the end of phrase
+      } else if (isDeleting && currentChar === 0) {
+        // Completed deleting current phrase
+        isDeleting = false;
+        currentPhrase = (currentPhrase + 1) % phrases.length; // Move to next phrase
+        typeSpeed = 500; // Pause before starting new phrase
+      }
+      
+      setTimeout(typeWriter, typeSpeed);
+    }
     
-<!-- Resume Section -->
-<section id="resume" class = "section">
-    <div class="container">
-        <h2>Resume</h2>
-
-        <!-- PDF Viewer Container (Static Image) -->
-        <div class="pdf-viewer" >
-            <img src="./images/yanni-resume.jpg" alt="PDF Preview" width="100%" height="auto">
-        </div>
-        
-        <div class="download-button-container">
-            <a class="download-button" href="./images/yanni-resume.pdf" download="Resume_Yanni Etchi.pdf">Download</a>
-        </div>
-
-    </div>
-</section>
-
-
-
-    <!-- Contact Section -->
-<section id="contact" class = "section">
-    <div class="container">
-        <h2>Contact Me</h2>
-        <p>Let's connect and collaborate!</p>
-
-        <!-- Social Links -->
-        <div class="social-links">
-            <a href="https://www.linkedin.com/in/yanni-etchi/" target="_blank">
-                <img src="./images/linkedin-color-svgrepo-com.svg" alt="LinkedIn Logo" class="social-logo">
-            </a>
-            <a href="https://twitter.com/your-twitter-handle" target="_blank">
-                <img src="./images/twitter-1-svgrepo-com.svg" alt="Twitter Logo" class="social-logo">
-            </a>
-            <a href="https://github.com/YanniEtchi237" target="_blank">
-                <img src="./images/github-color-svgrepo-com.svg" alt="GitHub Logo" class="social-logo">
-            </a>
-
-            
-        </div>
-        <button id="messageMeBtn">Message Me</button>
-        
-        
-
-        <!-- Contact Form -->
-        
-    </div>
-</section>
-
-
-
+    // Start the typing animation
+    window.addEventListener('load', typeWriter);
     
+    // Scroll reveal animations
+    const observer = new IntersectionObserver((entries, obs) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('section--visible');
+          obs.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.15 });
     
-    
-
-
-    
-    <script src="./scripts/script.js"></script>
+    document.querySelectorAll('section').forEach(sec => observer.observe(sec));
+  </script>
 </body>
 </html>
-
